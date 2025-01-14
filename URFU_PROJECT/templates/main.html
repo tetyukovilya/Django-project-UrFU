@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>Доля вакансий по городам</h1>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <canvas id="vacanciesChart" width="400" height="200"></canvas>
+    <script>
+        // Передаем данные из Django в JavaScript
+        const vacanciesData = {{ vacancies_per_year|safe }};
+
+        // Подготовка данных для графика
+        const labels = vacanciesData.map(entry => entry.year);
+        const data = vacanciesData.map(entry => entry.count);
+
+        // Создание графика
+        const ctx = document.getElementById('vacanciesChart').getContext('2d');
+        const vacanciesChart = new Chart(ctx, {
+            type: 'line', // Тип графика (линейный)
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Количество вакансий',
+                    data: data,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+{% endblock %}
