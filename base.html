@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+</head>
+<style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Минимальная высота страницы */
+        }
+        header {
+            background-color: #001f3f; /* Темно-синий цвет */
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+        footer {
+            background-color: #001f3f; /* Темно-синий цвет */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto; /* Отодвигает подвал вниз */
+        }
+    </style>
+{% block header %}
+<header>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            background-color: #001f3f; /* Темно-синий цвет */
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+        .logo {
+            margin-right: 20px;
+        }
+        .logo img {
+            height: 50px; /* Высота логотипа */
+        }
+        .title {
+            font-size: 24px; /* Размер шрифта названия */
+        }
+
+        nav {
+            width: 200px; /* Ширина меню */
+            background-color: #002b5c; /* Темно-синяя подложка меню */
+            padding: 20px;
+            position: fixed; /* Фиксированное положение */
+            top: 80px; /* С учетом высоты хедера */
+            bottom: 0; /* Прикреплено к нижней части страницы */
+            
+
+        }
+        nav a {
+            display: block; /* Каждая ссылка на новой строке */
+            color: white;
+            text-decoration: none;
+            padding: 10px 0;
+        }
+        nav a:hover {
+            background-color: #0056b3; /* Цвет при наведении */
+        }
+        .content {
+            margin-left: 220px; /* Отступ для контента */
+            padding: 20px;
+            flex: 1; /* Занимает доступное пространство */
+        }
+    </style>
+   <!-- <div class="logo">
+        <img src="{% static 'images/logo.png' %}" alt="Логотип">   Замените на путь к вашему логотипу
+    </div> -->
+    <div class="title">Profession Site</div>
+</header>
+
+<nav>
+    <h3>Меню</h3>
+    <a href="symbols">2000 символов и картинка</a>
+    <a href="stats">Статистика (все графики)</a>
+    <a href="#">Услуги</a>
+    <a href="#">Контакты</a>
+    <a href="#">Портфолио</a>
+</nav>
+
+{% endblock %}
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+
+
+{% block footer %}
+<footer>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        footer {
+            background-color: #001f3f; /* Темно-синий цвет */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    <p>ФИО: Тетюков Илья Константинович</p> <!-- Замените на реальные ФИО -->
+    <p>Академическая группа: РИ-230930</p> <!-- Замените на реальную группу -->
+</footer>
+{% endblock %}
+
+</html>
