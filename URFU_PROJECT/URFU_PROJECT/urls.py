@@ -21,5 +21,6 @@ from URFU_PROJECT_APP.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('stats', StatsPage.as_view()),
-    path('symbols', SymbolsPage.as_view())
+    path('symbols', SymbolsPage.as_view()),
+    path('jobs', LastestVacanciesHH.as_view())
 ]

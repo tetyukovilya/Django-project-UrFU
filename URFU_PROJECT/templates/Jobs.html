@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .job-listing {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.job-listing a {
+    font-weight: bold;
+    color: #007BFF;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.job-listing a:hover {
+    text-decoration: underline;
+}
+
+.job-listing div {
+    margin: 5px 0;
+}
+</style>
+
+{% for i in items %}
+    <div class="pages-title-centered-container">
+        <div class="job-listing">
+            <div>
+                <a href="{{ i.link }}">{{ i.title }}</a>
+            </div>
+            <div>{{ i.company }}</div>
+            <div>
+                <b>
+                    {% if i.salary.from == 'Отсутствует' and i.salary.to == 'Отсутствует' %}
+                        Отсутствует
+                    {% else %}
+                        {% if i.salary.from != 'Отсутствует' %}
+                            От {{ i.salary.from }}
+                        {% endif %}
+                        {% if i.salary.to != 'Отсутствует' %}
+                            До {{ i.salary.to }}
+                        {% endif %}
+                        {{ i.salary.currency }}
+                    {% endif %}
+                </b>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.views import View
+
+from .api_hh_ru import hh_api
 from .parser import main
 from .models import *
 
@@ -34,3 +36,12 @@ class SymbolsPage(View):
         return render(request, '2000Symbols.html',
                       context={"vacancies_per_year": vacancies_data})
         #main()
+
+class LastestVacanciesHH(View):
+    def get(self, request):
+        items = hh_api()
+
+        context = {
+            'items': items,
+        }
+        return render(request, 'Jobs.html', context)
