@@ -1,7 +1,8 @@
 import requests
 
 def hh_api():
-    req = requests.get('https://api.hh.ru/vacancies?per_page=10&professional_role=116')
+    req = requests.get('https://api.hh.ru/vacancies?per_page=10&professional_role=160&order_by=publication_time&text=безопасность, защита, information security specialist, information security')
+
     data = req.json()
     items = data['items']
 
@@ -12,7 +13,7 @@ def hh_api():
         if salaries is None:
             salaries = {'from': 'Отсутствует', 'to': 'Отсутствует'}
         else:
-            # Check for 'from' and 'to' values and set appropriate messages
+
             from_salary = salaries.get('from')
             to_salary = salaries.get('to')
 

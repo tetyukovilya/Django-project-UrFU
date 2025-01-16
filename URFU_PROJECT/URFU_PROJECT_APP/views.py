@@ -45,3 +45,15 @@ class LastestVacanciesHH(View):
             'items': items,
         }
         return render(request, 'Jobs.html', context)
+
+class GeoPage(View):
+    def get(self, request):
+        return 0
+
+class SkillsPage(View):
+    def get(self, request):
+        return 0
+
+class RealTimeVacancies(View):
+    def get(self, request):
+        return 0

@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-<div style="margin-left:20%;">
 <h1>Динамика количества вакансий по годам</h1>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <canvas id="vacanciesChart" width="400" height="200"></canvas>
+    <canvas id="vacanciesChart" width="400" height="150"></canvas>
     <script>
         // Передаем данные из Django в JavaScript
         const vacanciesData = {{ vacancies_per_year|safe }};
@@ -37,8 +36,8 @@
         });
     </script>
 
-    <h1>ТОП-20 навыков</h1>
-    <canvas id="skillsChart" width="400" height="200"></canvas>
+    <!-- <h1>ТОП-20 навыков</h1>
+    <canvas id="skillsChart" width="400" height="200"></canvas> -->
 
     <script>
     // Данные для графика ТОП-20 навыков
@@ -81,3 +80,4 @@
 
 </div>
 {% endblock %}
+
