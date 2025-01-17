@@ -1,10 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 
-</body>
-</html>
+<link rel="stylesheet" type="text/css" href="{% static 'css/vacancies.css' %}">
+<div class="job-listings-container">
+    {% for i in items %}
+        <div class="job-listing">
+            <div class="job-details">
+                <div class="job-title">
+                    <a href="{{ i.link }}" target="_blank">{{ i.title }}</a>
+                </div>
+                <div class="job-company">{{ i.company }}</div>
+
+                {% if i.city and i.city != 'Пусто' %}
+                    <div class="job-city">{{ i.city }}</div>
+                {% endif %}
+
+                <div class="job-salary">
+                    <b>
+                        {% if i.salary.from == 'Отсутствует' and i.salary.to == 'Отсутствует' %}
+                            Уровень дохода не указан
+                        {% else %}
+                            {% if i.salary.from != None %}
+                                От {{ i.salary.from }}
+                            {% endif %}
+                            {% if i.salary.to != None %}
+                                До {{ i.salary.to }}
+                            {% endif %}
+                            {{ i.salary.currency }}
+                        {% endif %}
+                    </b>
+                </div>
+
+                <div>
+                    <p class="desc">{{ i.desc }}</p>
+                </div>
+
+                <div>
+                    <div class="job-exp">
+                        {{ i.experience }}
+                    </div>
+
+                    {% for j in i.skills %}
+                        <div class="job-exp">{{ j }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="job-date">
+                    <small>{{ i.date }}</small>
+                </div>
+
+            </div>
+            <img src="{{ i.logo }}" alt="Логотип компании" class="logo">
+        </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

@@ -25,5 +25,5 @@ urlpatterns = [
     path('jobs', LastestVacanciesHH.as_view()),
     path('geo', GeoPage.as_view()),
     path('skills', SkillsPage.as_view()),
-    path('rtvacancies', RealTimeVacancies.as_view())
+    path('rtvacancies', LastestVacanciesHH.as_view())
 ]

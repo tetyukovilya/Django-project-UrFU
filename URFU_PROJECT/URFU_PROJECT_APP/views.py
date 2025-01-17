@@ -44,7 +44,7 @@ class LastestVacanciesHH(View):
         context = {
             'items': items,
         }
-        return render(request, 'Jobs.html', context)
+        return render(request, 'RealTimeVac.html', context)
 
 class GeoPage(View):
     def get(self, request):
