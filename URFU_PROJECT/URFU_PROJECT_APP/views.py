@@ -48,12 +48,12 @@ class LastestVacanciesHH(View):
 
 class GeoPage(View):
     def get(self, request):
-        return 0
+        return 0#render(request, 'Geo.html', context)
 
 class SkillsPage(View):
     def get(self, request):
-        return 0
+        return 0#render(request, 'Skills.html', context)
 
 class RealTimeVacancies(View):
     def get(self, request):
-        return 0
+        return 0#render(request, 'RealTimeVac', context)

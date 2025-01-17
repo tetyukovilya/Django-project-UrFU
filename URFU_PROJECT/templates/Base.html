@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ru">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            overflow-x: hidden; /* Убирает горизонтальную прокрутку */
+        }
+
+        header {
+            background-color: #006400;
+            color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px; /* Фиксированная высота полоски меню */
+            z-index: 1000;
+            transition: transform 0.3s ease; /* Анимация выезда */
+            box-sizing: border-box; /* Включает padding в размеры элемента */
+        }
+
+        header.menu-open {
+            transform: translateX(250px); /* Сдвиг вместе с меню */
+        }
+
+        header .title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 10px;
+            white-space: nowrap;
+        }
+
+        .menu-toggle {
+            cursor: pointer;
+            color: white;
+            font-size: 24px;
+            background: none;
+            border: none;
+        }
+
+        .menu-toggle.hide {
+            display: none;
+        }
+
+        nav {
+            width: 250px;
+            background-color: #006400;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            height: 100%;
+            overflow-y: auto;
+            transition: left 0.3s ease; /* Анимация открытия/закрытия */
+            z-index: 999;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        nav.active {
+            left: 0;
+        }
+
+        nav .menu-header {
+            display: flex;
+            align-items: center; /* Выравнивание по вертикали */
+            color: white;
+            font-size: 20px; /* Такой же размер, как у других элементов */
+            font-weight: bold;
+            padding: 10px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Разделительная линия */
+        }
+
+        nav .close-menu {
+            margin-left: auto; /* Сдвигаем кнопку крестика вправо */
+        }
+
+        nav a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            white-space: nowrap; /* Запрещает перенос текста */
+        }
+
+        nav a:hover {
+            background-color: #00FFFF;
+        }
+
+        .content {
+            padding: 20px;
+            margin-top: 60px; /* Учитываем фиксированную высоту хедера */
+            transition: margin-left 0.3s ease; /* Анимация при сдвиге */
+        }
+
+        .content.menu-open {
+            margin-left: 250px;
+        }
+
+        footer {
+            background-color: #006400;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+<header id="header">
+    <button id="menuToggle" class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <div class="title">Profession Site</div>
+</header>
+
+<nav id="menu">
+    <div class="menu-header">
+        Меню
+        <button class="close-menu" onclick="toggleMenu()">✖</button>
+    </div>
+    <a href="symbols">Главная</a>
+    <a href="stats">Общая статистика</a>
+    <a href="jobs">Востребованность</a>
+    <a href="geo">География</a>
+    <a href="skills">Навыки</a>
+    <a href="rtvacancies">Последние вакансии</a>
+</nav>
+
+<div id="main-content" class="content">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<footer>
+    <p>ФИО: Тетюков Илья Константинович</p>
+    <p>Академическая группа: РИ-230930</p>
+</footer>
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        const content = document.getElementById('main-content');
+        const header = document.getElementById('header');
+        const menuToggle = document.getElementById('menuToggle');
+
+        // Тоггл активного состояния
+        menu.classList.toggle('active');
+        content.classList.toggle('menu-open');
+        header.classList.toggle('menu-open');
+
+        // Переключение кнопки меню
+        if (menu.classList.contains('active')) {
+            menuToggle.classList.add('hide'); // Скрыть кнопку ☰
+        } else {
+            menuToggle.classList.remove('hide'); // Показать кнопку ☰
+        }
+    }
+</script>
+</body>
+</html>
