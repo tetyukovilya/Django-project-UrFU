@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('stats', StatsPage.as_view()),
     path('symbols', SymbolsPage.as_view()),
-    path('jobs', LastestVacanciesHH.as_view()),
+    path('jobs', StatsPage.as_view()),
     path('geo', GeoPage.as_view()),
     path('skills', SkillsPage.as_view()),
     path('rtvacancies', LastestVacanciesHH.as_view())

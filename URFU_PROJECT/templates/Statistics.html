@@ -5,7 +5,7 @@
     <canvas id="vacanciesChart" width="400" height="150"></canvas>
     <script>
         // Передаем данные из Django в JavaScript
-        const vacanciesData = {{ vacancies_per_year|safe }};
+        const vacanciesData = {{ vacancies_by_year|safe }};
 
         // Подготовка данных для графика
         const labels = vacanciesData.map(entry => entry.year);
@@ -36,48 +36,43 @@
         });
     </script>
 
-    <!-- <h1>ТОП-20 навыков</h1>
-    <canvas id="skillsChart" width="400" height="200"></canvas> -->
-
+<h1>Доля вакансий по городам</h1>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<canvas id="vacanciesChart" width="400" height="200"></canvas>
     <script>
-    // Данные для графика ТОП-20 навыков
-    const topSkills = {{ top_skills|safe }}; // Получаем данные из контекста
-    const skills = topSkills.map(skill => skill[0]); // Извлекаем названия навыков
-    const skillCounts = topSkills.map(skill => skill[1]); // Извлекаем количество упоминаний навыков
+        // Передаем данные из Django в JavaScript
+        const vacanciesData = {{ vacancies_by_year|safe }};
 
-    // Проверка данных в консоли
-    console.log(skills);
-    console.log(skillCounts);
+        // Подготовка данных для графика
+        const labels = vacanciesData.map(entry => entry.year);
+        const data = vacanciesData.map(entry => entry.count);
 
-    // Создание графика ТОП-20 навыков
-    const ctxSkills = document.getElementById('skillsChart').getContext('2d');
-    const skillsChart = new Chart(ctxSkills, {
-        type: 'bar', // Тип графика: столбчатая диаграмма
-        data: {
-            labels: skills,
-            datasets: [{
-                label: 'Частота навыков',
-                data: skillCounts,
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'ТОП-20 навыков'
+        // Создание графика
+        const ctx = document.getElementById('vacanciesChart').getContext('2d');
+        const vacanciesChart = new Chart(ctx, {
+            type: 'line', // Тип графика (линейный)
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Количество вакансий',
+                    data: data,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
-</script>
+        });
+    </script>
 
-</div>
+
+
 {% endblock %}
 

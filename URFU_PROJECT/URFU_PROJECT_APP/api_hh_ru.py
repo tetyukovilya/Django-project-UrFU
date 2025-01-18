@@ -18,12 +18,12 @@ def extract_salary(salary):
     if salary is None:
         return {'from': 'Отсутствует', 'to': 'Отсутствует', 'currency': 'Не указано'}
 
-    from_salary = salary.get('from', 'Отсутствует')
-    to_salary = salary.get('to', 'Отсутствует')
+    from_sal = salary.get('from', 'Отсутствует')
+    to_sal = salary.get('to', 'Отсутствует')
 
     return {
-        'from': from_salary,
-        'to': to_salary,
+        'from': from_sal,
+        'to': to_sal,
         'currency': salary.get('currency', 'Не указано'),
     }
 
