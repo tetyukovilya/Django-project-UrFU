@@ -1,10 +1,195 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+{%load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/stats.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="pages-graph-title">
+    <h2 class="pages-main-subtitle">Динамика зарплат по городам</h2>
+</div>
 
-</body>
-</html>
+<div class="pages-graph">
+    <canvas id="salaryByCityChart" width="400" height="200"></canvas>
+    <script>
+        const salaryByCityData = {{ city_sal_data|safe }};
+        console.log(salaryByCityData); // Проверка данных в консоли
+
+        const cityLabels = Object.keys(salaryByCityData);
+        const cityData = Object.values(salaryByCityData);
+
+        // Ограничиваем количество городов до 50
+        const limitedCityLabels = cityLabels.slice(0, 50);
+        const limitedCityData = cityData.slice(0, 50);
+
+        // Создание графика зарплат
+        const ctxCitySalaries = document.getElementById('salaryByCityChart').getContext('2d');
+        const citySalaryChart = new Chart(ctxCitySalaries, {
+            type: 'bar',  // Можно использовать 'line' или 'bar'
+            data: {
+                labels: limitedCityLabels, // Используем ограниченные метки
+                datasets: [{
+                    label: 'Средняя зарплата',
+                    data: limitedCityData, // Используем ограниченные данные
+                    borderColor: 'rgb(0,128,0)',
+                    backgroundColor: 'rgba(168,228,160,0.2)',
+                    borderWidth: 1,
+                    fill: true,
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Зарплата (в рублях)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Расположение'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+    <h2 class="pages-main-subtitle">Таблица с данными о зарплатах по городам</h2>
+<table id="pagesSalaryByCityTable" class="pagesTable" border="1">
+    <thead>
+    <tr>
+        <th>Зарплата (₽)</th>
+        <th>Город</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Данные будут добавлены здесь с помощью JavaScript -->
+    </tbody>
+</table>
+
+<script>
+    // Заполнение таблицы данными о зарплатах по городам
+    const SalaryByCityTableBody = document.querySelector('#pagesSalaryByCityTable tbody');
+
+    function fillTable(limit) {
+        SalaryByCityTableBody.innerHTML = ''; // Очищаем таблицу перед заполнением
+        for (let i = 0; i < limit; i++) {
+            const row = document.createElement('tr');
+
+            const countCell = document.createElement('td');
+            countCell.textContent = cityData[i].toLocaleString('ru-RU') + ' ₽';
+            row.appendChild(countCell);
+
+            const cityCell = document.createElement('td');
+            cityCell.textContent = cityLabels[i];
+            row.appendChild(cityCell);
+
+            SalaryByCityTableBody.appendChild(row);
+        }
+    }
+
+    // Заполняем таблицу первыми 10 значениями
+    fillTable(10);
+</script>
+</div>
+
+<div>
+    <h2 class="pages-main-subtitle">Доля вакансий по городам</h2>
+    <div class="pages-graph">
+        <canvas id="cityChart" width="400" height="200"></canvas>
+    </div>
+    <script>
+        const vacanciesByCityData = {{ vacancies_data_json|safe }};
+        console.log(vacanciesByCityData); // Проверка данных в консоли
+        // Проверяем, есть ли данные
+        if (!vacanciesByCityData || vacanciesByCityData.length === 0) {
+            console.error('Нет данных для отображения');
+        } else {
+            // Фильтруем данные только для графика, исключая значения менее 5
+            const filteredDataForChart = vacanciesByCityData.filter(entry => entry.count >= 5);
+
+            // Подготовка данных для графика
+            const labels = filteredDataForChart.map(entry => entry.area_name || 'Не указано'); // Обработка пустых полей
+            const data = filteredDataForChart.map(entry => entry.count);
+
+            // Создание графика
+            const ctx = document.getElementById('cityChart').getContext('2d');
+            const cityChart = new Chart(ctx, {
+                type: 'bar', // Тип графика: столбчатая диаграмма
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Количество вакансий по городам',
+                        data: data,
+                        borderColor: 'rgb(68,148,74)',
+                        backgroundColor: 'rgba(168,228,160,0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+    <h2 class="pages-main-subtitle">Таблица вакансий по городам</h2>
+<table id ="pagesVacancyTable" class="pagesTable" border="1">
+    <thead>
+        <tr>
+            <th>Город</th>
+            <th>Количество вакансий</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div class="showMoreDiv">
+        <button id="showMoreButton" class="showMoreButton" style="margin-top: 10px;">Посмотреть больше</button>
+    </div>
+    <script>
+
+        // Заполнение таблицы данными (все данные)
+        const VacancyByCityTableBody = document.getElementById('pagesVacancyTable').getElementsByTagName('tbody')[0];
+
+        // Отображаем только первые 10 значений
+        const initialCount = 10;
+        vacanciesByCityData.slice(0, initialCount).forEach(entry => {
+            const row = VacancyByCityTableBody.insertRow();
+            const cellCity = row.insertCell(0);
+            const cellCount = row.insertCell(1);
+            cellCity.textContent = entry.area_name || 'Не указано'; // Название города
+            cellCount.textContent = entry.count; // Количество вакансий
+        });
+
+        // Переменная для отслеживания текущего количества отображаемых строк
+        let displayedCount = initialCount;
+
+        // Обработчик для кнопки "Посмотреть больше"
+        const showMoreButton = document.getElementById('showMoreButton');
+        showMoreButton.addEventListener('click', () => {
+            // Удаляем кнопку
+            showMoreButton.style.display = 'none';
+
+            // Заполняем оставшиеся данные
+            vacanciesByCityData.slice(displayedCount).forEach(entry => {
+                const row = VacancyByCityTableBody.insertRow();
+                const cellCity = row.insertCell(0);
+                const cellCount = row.insertCell(1);
+                cellCity.textContent = entry.area_name || 'Не указано'; // Название города
+                cellCount.textContent = entry.count; // Количество вакансий
+            });
+
+            // Обновляем количество отображаемых строк
+            displayedCount = vacanciesByCityData.length; // Теперь показываем все данные
+        });
+    </script>
+
+</div>
+
+{% endblock %}

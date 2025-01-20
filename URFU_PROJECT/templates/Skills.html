@@ -1,10 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
+{%load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/stats.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="pages-graph-title">
+    <h2 class="pages-main-subtitle">Топ-20 навыков</h2>
+</div>
+<div class="pages-graph">
+    <canvas id="skillsChart" width="400" height="150"></canvas>
+    <script>
+    // Данные для графика ТОП-20 навыков
+    const topSkills = {{ top_skills|safe }}; // Получаем данные из контекста
+    const skills = topSkills.map(skill => skill[0]); // Извлекаем названия навыков
+    const skillCounts = topSkills.map(skill => skill[1]); // Извлекаем количество упоминаний навыков
 
-</body>
-</html>
+    // Проверка данных в консоли
+    console.log(skills);
+    console.log(skillCounts);
+
+    // Создание графика ТОП-20 навыков
+    const ctxSkills = document.getElementById('skillsChart').getContext('2d');
+    const skillsChart = new Chart(ctxSkills, {
+        type: 'bar', // Тип графика: столбчатая диаграмма
+        data: {
+            labels: skills,
+            datasets: [{
+                label: 'Частота навыков',
+                data: skillCounts,
+                borderColor: 'rgb(0,128,0)',
+                backgroundColor: 'rgba(168,228,160,0.2)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'ТОП-20 навыков'
+                }
+            }
+        }
+    });
+</script>
+    <h2 class="pages-main-subtitle">Табличное представление навыков</h2>
+<table id="pagesSkillsTable" class="pagesTable" border="1">
+    <thead>
+    <tr>
+        <th>Навык</th>
+        <th>Частота</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Данные будут добавлены здесь с помощью JavaScript -->
+    </tbody>
+</table>
+
+<script>
+    // Заполнение таблицы данными
+    const topSkillsTableBody = document.getElementById('pagesSkillsTable').getElementsByTagName('tbody')[0];
+    topSkills.forEach(skill => {
+        const row = topSkillsTableBody.insertRow();
+        const cellSkill = row.insertCell(0);
+        const cellCount = row.insertCell(1);
+        cellSkill.textContent = skill[0]; // Название навыка
+        cellCount.textContent = skill[1]; // Частота
+    });
+</script>
+
+</div>
+{% endblock %}

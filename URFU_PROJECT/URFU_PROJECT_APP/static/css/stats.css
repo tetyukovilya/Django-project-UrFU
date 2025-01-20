@@ -1,0 +1,43 @@
+/* Основные стили для таблиц */
+.pagesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для заголовков таблицы */
+.pagesTable thead {
+    background-color: #4CAF50; /* Зеленый цвет для заголовков */
+    color: white;
+}
+
+.pagesTable th,
+.pagesTable td {
+    padding: 12px 15px; /* Отступы для ячеек */
+    border: 1px solid #ddd; /* Граница ячеек */
+}
+
+/* Стили для ячеек */
+.pagesTable td {
+    background-color: #f9f9f9; /* Светлый фон для ячеек */
+}
+
+/* Чередование фонов для строк */
+.pagesTable tr:nth-child(even) td {
+    background-color: #f2f2f2; /* Светло-серый фон для четных строк */
+}
+
+/* Эффект при наведении на строку */
+.pagesTable tr:hover td {
+    background-color: #e0e0e0; /* Цвет при наведении */
+}
+
+/* Стили для заголовка таблицы */
+.pages-main-subtitle {
+    font-size: 24px; /* Размер шрифта заголовка */
+    margin-bottom: 10px; /* Отступ снизу */
+    color: #333; /* Цвет заголовка */
+}
